@@ -30,11 +30,11 @@ if __name__ == '__main__':
     #                     format='%(asctime)s %(levelname)s %(message)s',
     #                     filename='../../Sandbox/basic_file.log')
 
-    log_filename = '../../Sandbox/file_handler_with_formatter.log'
+    log_filename = './log'
     file_handler = logging.FileHandler(log_filename)
 
-    fmt = logging.Formatter('enter same format string as used in basicConfig() example')
-    file_handler.set the formatter on the FileHandler object
+    fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+    file_handler.setFormatter(fmt)
 
     root_logger = logging.getLogger()
     root_logger.addHandler(file_handler)

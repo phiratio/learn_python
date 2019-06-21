@@ -27,7 +27,7 @@ def get_monthly_payment(principal, years):
     return result
 
 if __name__ == '__main__':
-    log_filename = '../../Sandbox/separate_levels.log'
+    log_filename = './log'
     file_handler = logging.FileHandler(log_filename)
 
     fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     stdout_handler = logging.StreamHandler(sys.stdout)
     stdout_handler.setFormatter(fmt)
-    stdout_handler.set handler level
+    stdout_handler.setLevel(logging.WARNING)
     root_logger.addHandler(stdout_handler)
 
     root_logger.setLevel(logging.DEBUG)
