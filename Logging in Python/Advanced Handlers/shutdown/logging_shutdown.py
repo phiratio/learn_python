@@ -33,7 +33,7 @@ def get_monthly_payment(principal, years):
 
 if __name__ == '__main__':
 
-    log_filename = '../../Sandbox/memory_handler.log'
+    log_filename = './log'
     file_handler = logging.FileHandler(log_filename, mode='w')
 
     fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -53,4 +53,4 @@ if __name__ == '__main__':
     # to the FileHandler.
     memory_handler.setTarget(None)
 
-    insert call to gracefully shutdown logging system
+    logging.shutdown()
