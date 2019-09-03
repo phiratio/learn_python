@@ -168,8 +168,8 @@ class StageTest:
                     fail_msg = f'Wrong answer in test #{test_number}'
                     self.get_print_back()
                     failed(fail_msg + '\n\n' + result.feedback)
-                    break
-
+                    return
+            passed()
         except SyntaxException as ex:
             self.get_print_back()
             failed(ex.message)
