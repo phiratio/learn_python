@@ -2,14 +2,15 @@ from hstest.stage_test import *
 from hstest.test_case import TestCase
 from hstest.check_result import accept, wrong
 
-from random import shuffle
-from string import ascii_lowercase
+from random import shuffle, randint
+from string import ascii_lowercase, ascii_letters, punctuation, digits
 
 
 description_list = ['python', 'java', 'kotlin', 'javascript']
 out_of_description = ['clojure', 'haskell', 'typescript', 'assembler']
 
 catch = {i: 0 for i in description_list}
+all_letters = ascii_letters + punctuation + digits
 
 
 class CoffeeMachineTest(StageTest):
@@ -18,43 +19,23 @@ class CoffeeMachineTest(StageTest):
 
         for word in description_list + out_of_description + [ascii_lowercase]:
             for i in range(100):
-                words = [w for w in word * 2]
+                words = [w if randint(1, 100) < 95 else w + w for w in word * 50 + all_letters]
                 shuffle(words)
                 inputs = '\n'.join(words)
                 tests += [TestCase(stdin=inputs, attach=words)]
 
         shuffle(tests)
-
-        word = 'l\na\ns\nt\n' * 2
-        tests += [TestCase(stdin=word, attach='last')]
         return tests
 
     def check(self, reply: str, attach: Any) -> CheckResult:
 
-        tries = [i.strip() for i in reply.strip().split('\n\n') if len(i.strip())]
+        tries = [i.strip() for i in reply.split('\n\n') if len(i.strip())]
 
         if len(tries) == 0:
             return wrong(
                 "Seems like you didn't print the game or not separated output properly"
                 "(there need to be an empty line between guessing attempts)"
             )
-
-        if "Input a letter" not in reply:
-            return wrong(
-                "Input doesn't contain any \"Input a letter\" lines"
-            )
-
-        if 'for playing' not in tries[-1]:
-            return wrong(
-                "Last block should contain text \"Thanks for playing!\""
-            )
-
-        elif "Input a letter" in tries[-1]:
-            return wrong(
-                "Last block should not contain text \"Input a letter\""
-            )
-
-        tries = tries[:-1]
 
         full_blocks = [try_ for try_ in tries if len(try_.splitlines()) > 1]
         blocks = [block.splitlines()[0].strip() for block in full_blocks]
@@ -67,11 +48,16 @@ class CoffeeMachineTest(StageTest):
                     f'{full_block}'
                 )
 
-        if len(blocks) < 8:
-            return wrong(
-                f'There are less than 8 blocks of output. '
-                f'Did you separate each guess attempt with a new line?'
-            )
+        survived = 'You survived!'
+        hanged = 'You are hanged!'
+
+        is_survived = survived in full_blocks[-1]
+        is_hanged = hanged in full_blocks[-1]
+
+        no_such_letter = 'No such letter in the word'
+        already_typed = 'You already typed this letter'
+        not_ascii = 'It is not an ASCII lowercase letter'
+        print_single = 'You should print a single letter'
 
         lengths = set(len(i) for i in blocks)
 
@@ -100,7 +86,110 @@ class CoffeeMachineTest(StageTest):
                 f'{blocks[0]}'
             )
 
-        for letter, prev, next in zip(attach, blocks[0:], blocks[1:]):
+        wrong_count = 0
+        typed_letters = set()
+        inputs = ''
+
+        if is_hanged:
+            blocks += [blocks[-1]]
+            full_blocks += [full_blocks[-1]]
+
+        for letter, prev, next, prev_full, next_full in zip(
+                attach, blocks[0:], blocks[1:], full_blocks[0:], full_blocks[1:]):
+
+            # ---
+            detect_not_one = len(letter) != 1
+
+            if detect_not_one and print_single not in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is no \"{print_single}\" message, but should be'
+                )
+            elif not detect_not_one and print_single in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is \"{print_single}\" message, but shouldn\'t be'
+                )
+
+            if detect_not_one:
+                continue
+
+            # ---
+            detect_not_ascii = letter not in ascii_lowercase
+
+            if detect_not_ascii and not_ascii not in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is no \"{not_ascii}\" message, but should be'
+                )
+            elif not detect_not_ascii and not_ascii in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is \"{not_ascii}\" message, but shouldn\'t be'
+                )
+
+            if detect_not_ascii:
+                continue
+
+            inputs += '\n' + letter
+
+            # ---
+            detect_typed_letter = letter in typed_letters
+
+            if detect_typed_letter and already_typed not in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is no \"{already_typed}\" message, but should be\n'
+                    f'Input letters: {inputs}'
+                )
+            elif not detect_typed_letter and already_typed in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is \"{already_typed}\" message, but shouldn\'t be'
+                    f'Input letters: {inputs}'
+                )
+
+            if detect_typed_letter:
+                continue
+
+            # ---
+            detect_no_such_letter = (
+                (letter not in prev) and
+                (letter not in next) and
+                (next == prev) and not detect_typed_letter
+            )
+
+            if detect_no_such_letter and no_such_letter not in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is no \"{no_such_letter}\" message, but should be'
+                )
+            elif not detect_no_such_letter and no_such_letter in prev_full:
+                return wrong(
+                    f'Before: {prev}\n'
+                    f'Letter: {letter}\n'
+                    f'After : {next}\n\n'
+                    f'There is \"{no_such_letter}\" message, but shouldn\'t be'
+                )
+
+            if detect_no_such_letter:
+                wrong_count += 1
+
+            typed_letters |= {letter}
 
             cond1 = (
                 (letter not in prev) and
@@ -128,17 +217,33 @@ class CoffeeMachineTest(StageTest):
                     f'After : {next}'
                 )
 
-        if '-' not in blocks[-1]:
-            catch[blocks[-1]] += 1
+        if is_survived and is_hanged:
+            return wrong(
+                f'Looks like your output contains both \"{survived}\"'
+                f' and \"{hanged}\". You should output only one of them.'
+            )
 
-        if attach == 'last':
-            if catch.values() == 0:
+        if not is_survived and not is_hanged:
+            return wrong(
+                f'Looks like your output doesn\'t contain neither \"{survived}\"'
+                f' nor \"{hanged}\". You should output one of them.'
+            )
+
+        if is_hanged:
+            if wrong_count != 8:
                 return wrong(
-                    "Looks like your program is not using "
-                    "all of the words to guess from the list in description"
+                    f'User was hanged after {wrong_count} wrong guesses, but should after 8'
                 )
+            else:
+                return accept()
 
-        return accept()
+        if is_survived:
+            if wrong_count >= 8:
+                return wrong(
+                    f'User survived but have {wrong_count} wrong guesses. He should be hanged'
+                )
+            else:
+                return accept()
 
 
 if __name__ == '__main__':
