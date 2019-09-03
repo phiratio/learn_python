@@ -22,6 +22,7 @@ class CoffeeMachineTest(StageTest):
                 words = [w if randint(1, 100) < 95 else w + w for w in word * 50 + all_letters]
                 shuffle(words)
                 inputs = '\n'.join(words)
+                inputs = 'play\n' + inputs + '\nexit'
                 tests += [TestCase(stdin=inputs, attach=words)]
 
         shuffle(tests)
@@ -29,7 +30,7 @@ class CoffeeMachineTest(StageTest):
 
     def check(self, reply: str, attach: Any) -> CheckResult:
 
-        tries = [i.strip() for i in reply.split('\n\n') if len(i.strip())]
+        tries = [i.strip() for i in reply.split('\n\n') if len(i.strip())][1:]
 
         if len(tries) == 0:
             return wrong(
