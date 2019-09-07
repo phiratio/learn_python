@@ -56,7 +56,7 @@ class CoffeeMachine:
             self.machine_start_state()
 
     def print_current_machine_resources(self):
-        print('The coffee machine has:')
+        print('\nThe coffee machine has:')
         print(f'{self.water} of water')
         print(f'{self.milk} of milk')
         print(f'{self.coffee} of coffee beans')
@@ -82,13 +82,22 @@ class CoffeeMachine:
                 self.make_coffee(coffee_codes[user_input])
 
     def do_fill_machine(self):
-        water_to_add = input('Write how many ml of water do you want to add: ')
-        milk_to_add = input('Write how many ml of milk do you want to add: ')
-        coffee_to_add = input('Write how many grams of coffee beans do you want to add: ')
-        cups_to_add = input('Write how many disposable cups of coffee do you want to add: ')
+        try:
+            self.water += int(input('Write how many ml of water do you want to add: '))
+            self.milk += int(input('Write how many ml of milk do you want to add: '))
+            self.coffee += int(input('Write how many grams of coffee beans do you want to add: '))
+            self.cups += int(input('Write how many disposable cups of coffee do you want to add: '))
+            self.print_current_machine_resources()
+            self.machine_start_state()
+        except Exception as e:
+            print('RETARD')
+            self.machine_start_state()
 
     def do_take_money_from_machine(self):
-        pass
+        print('I gave you ${}\n'.format(self.money))
+        self.money = 0
+        self.print_current_machine_resources()
+        self.machine_start_state()
 
 
 costa_ricca = CoffeeMachine(1200, 540, 120, 9, 550)
