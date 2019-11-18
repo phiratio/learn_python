@@ -22,6 +22,13 @@ class User:
         encrypted = self._encrypt_pw(password)
         return encrypted == self.password
 
+    def set_new_password(self, password):
+        print(f'password before {self.password}')
+        self.password = self._encrypt_pw(password)
+        print(f'password after {self.password}')
+        print(f'hm {self}')
+        print(self.password == self._encrypt_pw(password))
+
 
 class AuthException(Exception):
     def __init__(self, username, user=None):
@@ -93,7 +100,15 @@ class Authenticator:
 
     def change_password(self, username):
         if username in self.users:
-             self.users[username].is_logged_in
+            while True:
+                password = input('Enter your current password: ')
+                if self.users[username].check_password(password):
+                    new_password = input('Enter your new password')
+                    new_password_recheck = input('Re-enter  your new password')
+                    if new_password == new_password_recheck:
+                        self.users[username].set_new_password(new_password)
+                        print('Password changed successfully')
+                        return True
 
     def is_logged_in(self, username):
         if username in self.users:
