@@ -29,3 +29,26 @@ print(merge_sort(merge_sort_test_arr))
 print(merge_sort([1]))
 print(merge_sort([2, 1]))
 print(merge_sort([2, 1, 3]))
+
+# find median element from 2 sorted lists
+arr1 = [4, 6, 7, 3]
+arr2 = [2, 8, 9]
+
+
+def median_finder(array_1: list, array_2: list):
+    array_1 = merge_sort(array_1)
+    array_2 = merge_sort(array_2)
+    counter = math.ceil(
+        len(array_1 + array_2) / 2.0
+    )
+    results = []
+    while counter > 0:
+        counter -= 1
+        if array_1[0] <= array_2[0]:
+            results.append(array_1.pop(0))
+        else:
+            results.append(array_2.pop(0))
+    return results[-1]
+
+
+print(median_finder(arr1, arr2))
