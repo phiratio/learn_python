@@ -1,0 +1,13 @@
+# activate venv
+# ./manage.py shell
+from store.models import Product
+from store.serializers import ProductSerialzier
+from rest_framework.renderers import JSONRenderer
+
+product = Product.objects.all()[0]
+serialzier = ProductSerializer()
+data = serialzier.to_representation(product)
+renderer = JSONRenderer()
+
+s_data = renderer.render(data)
+print(s_data)
