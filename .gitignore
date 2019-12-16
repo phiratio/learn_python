@@ -106,3 +106,4 @@ venv.bak/
 
 # ide
 .idea
+/django_projects/drf_store/drf_store_env/
