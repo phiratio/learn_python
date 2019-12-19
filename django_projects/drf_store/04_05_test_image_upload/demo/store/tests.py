@@ -69,6 +69,7 @@ class ProductUpdateTestCase(APITestCase):
     def test_upload_product_photo(self):
         product = Product.objects.first()
         original_photo = product.photo
+        print(f'original photo ${original_photo}')
         photo_path = os.path.join(settings.MEDIA_ROOT, 'products', 'vitamin-iron.jpg')
         with open(photo_path, 'rb') as photo_data:
             response = self.client.patch('/api/v1/products/{}/'.format(product.id), {
@@ -79,6 +80,7 @@ class ProductUpdateTestCase(APITestCase):
         try:
             updated = Product.objects.get(id=product.id)
             expected_photo = os.path.join(settings.MEDIA_ROOT, 'products', 'vitamin-iron')
+            print(f'updated photo is {updated.photo}')
             self.assertTrue(updated.photo.path.startswith(expected_photo))
         finally:
             os.remove(updated.photo.path)
