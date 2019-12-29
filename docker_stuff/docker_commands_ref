@@ -1,0 +1,57 @@
+image -> container -> stopped container
+docker images
+docker run -it ubuntu:latest bash # this runs it with main process bash
+docker ps -a (all)
+docker ps -l (last)
+docker run -d -it ubuntu bash (deatached mode )
+ctrl + p  ctrl + q -> exit , but process runs(kinda deatach)
+docker commit ( takes container - makes image from it )
+docker commit <id/name> name:version
+docker exec (spawns new process, cannot modify networks, volumes etc.)
+docker run --rm -it name process ( dont save container after exit )
+docker run -it ubuntu bash -c "sleep 3; echo all done" ( -c wat to run )
+docker attach <container> (attach to main process)
+docker kill/stop <container name>
+### ports
+docker run --rm -ti -p 45678:45678 -p 45679:45679 --name top-server ubuntu bash
+#inside nc -lp 45678 | nc -lp 45679
+#open new container
+docker run --rm -it -p 4444:4444 -p 5555:5555 --name top-serv ubuntu bash
+nc -lp 4444 | nc -lp 5555
+###DOCKER LOCALHOST REF host.docker.internal  ###
+nc localhost 4444
+### dynamic ports
+docker run --rm -it -p 12345 ubuntu:nc bash
+docker port <container>
+### container networking
+docker network ls
+docker network create learning
+docker run --rm -it --net learning --name catserver ubuntu:14.04 bash
+... dogserver
+nc dogserver 1234 and nc -lp 1234
+docker network create catsonly
+docker network connect catsonly catserver
+### legacy linking - one way only, secrets also linked
+docker run --rm -it -e secret=top --net catsonly --name catserver ubuntu:14.04 bash
+docker run --rm -it --net catsonly --name dogserver --link catserver ubuntu:14.04 bash
+### images (docker pull, used auto by docker run)
+docker images
+docker rmi <image:tag/ID> 
+### volumes - 'virtual' disks to store and share data
+### persistant ones and 'ephemeral'
+mkdir ~/example
+docker run -it -v ~/example:/shared-folder ubuntu:nc bash
+# for single file - file must exist before container start
+### volumes-from - shared discs that exist as long as they are being used
+docker run -it -v /shared-data ubuntu bash # create
+docker run -it --volumes-from 5f201ab0ab89 ubuntu bash # use
+# you can pass volumes from one to another to third container
+### registries
+docker search
+docker tag ubuntu phiratio/top-image:xxl
+docker push phiratio/top-image:xxl
+### dockerfiles
+docker build -t name-of-result -f <dockerfilepath> .(place where dockerfile is)
+# proces started on one line will not be running on the next line
+# each line is like docker run and commit
+# if ENV is used - remember the above
