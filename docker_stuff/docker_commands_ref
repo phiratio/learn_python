@@ -55,3 +55,15 @@ docker build -t name-of-result -f <dockerfilepath> .(place where dockerfile is)
 # proces started on one line will not be running on the next line
 # each line is like docker run and commit
 # if ENV is used - remember the above
+docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock docker sh
+the inside docker run -it --rm ubuntu bash
+### bridging
+# docker uses bridges to create virtual networks in your computer. These are software switches.
+# They control the Ethernet layer, you can turn them off with --net=host
+### routing
+# uses iptables to do controlling
+# exposing port is actually prot forwarding
+sudo iptables -n -L -t nat
+#--privileged=true -> full control over the host system
+#combo with --net=host
+docker inspect --format '{{.State.Pid}}' <container name/id>
