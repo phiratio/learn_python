@@ -52,7 +52,7 @@ docker tag ubuntu phiratio/top-image:xxl
 docker push phiratio/top-image:xxl
 ### dockerfiles
 docker build -t name-of-result -f <dockerfilepath> .(place where dockerfile is)
-# proces started on one line will not be running on the next line
+# process started on one line will not be running on the next line
 # each line is like docker run and commit
 # if ENV is used - remember the above
 docker run -it --rm -v /var/run/docker.sock:/var/run/docker.sock docker sh
@@ -67,3 +67,9 @@ sudo iptables -n -L -t nat
 #--privileged=true -> full control over the host system
 #combo with --net=host
 docker inspect --format '{{.State.Pid}}' <container name/id>
+### registry
+docker run -d -p 5000:5000 --restart=always --name registry registry
+docker tag ubuntu localhost:5000/topcompany/ubuntu:top
+docker push localhost:5000/topcompany/ubuntu:top
+docker save -o my-images.tar.gz image1:2 image2 ubuntu:latest
+docker load -i my-images.tar.gz

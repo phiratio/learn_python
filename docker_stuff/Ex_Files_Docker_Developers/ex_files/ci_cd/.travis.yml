@@ -1,0 +1,16 @@
+sudo: required
+services:
+  - docker
+
+script:
+  - docker build -t <dockeruser/nameofproject> .
+  - docker images <dockeruser/nameofproject>
+
+before_deploy:
+  - docker login -u <username>  -p <userpassword>
+
+deploy:
+  provider: script
+  script: docker push <dockeruser/nameofproject>
+  on:
+    branch: master
