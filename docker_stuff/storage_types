@@ -1,0 +1,38 @@
+### volumes filesystem access inside docker area ###
+### bind mounts - direct filesystem access ###
+### tmpfs inmemory ###
+
+###block###
+# fixed chunks of data
+# no metadata is stored
+# best for I/O intensive apps
+# SAN storage uses bock storage protocols like iSCI
+
+###object###
+# data is stored with metadata and a unique indentifier
+# there is no organization to the objects
+# limitless scalability
+# accessed with HTTP calls
+# example is amazon S3
+
+### layerd storage filesystem ###
+# images are made up of multiple read-only layers. Multiple containers are typically based on the same image. When an image is instantiated 
+# into a container, a top writable layer is created ( which is deleted when the container is removed)
+# Docker uses storage drivers to manage the contents of the image layers and writable container layer. 
+# Each storage driver handles the implementation differently, but all drivers use stackable image layers and copy-on-write (COW) strategy.
+
+### example of docker image union filesystem ###
+# image layers below
+# more changes
+# applications
+# config changes
+# operating system
+# manifest
+## you can check layers with docker image inspect <image name/id/tag>
+## and docker history <image name/id/tag>
+
+### storage drivers ###
+# for different distros, tehere are different recommendation fro default storage driver!
+# when you change storage driver any existing images/containers become inaccessible
+# docker volume inspect <name>
+
