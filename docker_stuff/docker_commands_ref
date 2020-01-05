@@ -73,3 +73,7 @@ docker tag ubuntu localhost:5000/topcompany/ubuntu:top
 docker push localhost:5000/topcompany/ubuntu:top
 docker save -o my-images.tar.gz image1:2 image2 ubuntu:latest
 docker load -i my-images.tar.gz
+### mounts
+docker container run -d --mount type=bind,source=/app,target=/app nginx
+#error - bind source path doesn't exist - with volumes you don't have to create the point ahead of time, with binds you have to create the folder !
+
