@@ -11,6 +11,7 @@ docker exec (spawns new process, cannot modify networks, volumes etc.)
 docker run --rm -it name process ( dont save container after exit )
 docker run -it ubuntu bash -c "sleep 3; echo all done" ( -c wat to run )
 docker attach <container> (attach to main process)
+docker attach --sig-proxy=false <containeer> (attach in such way that ctrl + c doesnt kill container)
 docker kill/stop <container name>
 ### ports
 docker run --rm -ti -p 45678:45678 -p 45679:45679 --name top-server ubuntu bash
