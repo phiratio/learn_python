@@ -1,0 +1,7 @@
+{
+  "name": "dockerhp-app",
+  "description": "Sample application for Docker course",
+  "repository": "http://github.com/dockerhp/video.git",
+  "license": "Apache-2.0",
+  "dependencies": [ "dockerode" ]
+}

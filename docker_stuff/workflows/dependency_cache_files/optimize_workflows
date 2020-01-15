@@ -1,0 +1,22 @@
+### DEPENDENCY CACHE SETUP###
+docker run -p 8081:8081 --name nexus -d sonatype/nexus3
+# login with admin
+# create repository - npm proxy https://registry.npmjs.com
+# name it for example npmjs.com-proxy
+docker run --network container:nexus --rm -it node /bin/bash
+# inside node container
+npm config set registry http://127.0.0.1:8081/repository/npmjs.com-proxy/
+npm install faker
+# then rm rf node_modules and package.lock.json and reinstall
+# note instalation time >>> profit
+
+### Build dependencies based on the cache ###
+# inside workflows/dependency_cache
+docker build --network container:nexus -t somename .
+
+
+### Builder pattern for optimisation of build sizes ###
+# Well use multistage builds - separate file container vs container environment needed to build app
+# example inside Dockerfile is:
+# FROM gcr.io/distroless/nodejs and COPY --from=npm /app/node_modules /app/node_modules
+
