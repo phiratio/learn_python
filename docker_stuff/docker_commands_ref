@@ -1,4 +1,14 @@
 image -> container -> stopped container
+### RUN vs CMD
+# can have multiple runs only one cmd
+# run executes command on new layer, commits output/changes/ to the final image
+# cmd provides default behaviour when launching instance of the image
+# RUN["echo","hi"] => exec form, passed as JSON array, does not invoke a shell
+# RUN echo hi      => runs in the default shell for the image,allows variable substitution & other shell stuff
+### ENV vs ARG
+# ENV - persists thru build, also when image is runned as container
+# ARG - can be passed into the build command
+### LABEL - key, value pairs attached as metadata. Informative purpose only
 docker images
 docker run -it ubuntu:latest bash # this runs it with main process bash
 docker ps -a (all)
