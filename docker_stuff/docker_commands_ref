@@ -93,4 +93,12 @@ docker load -i my-images.tar.gz
 ### mounts
 docker container run -d --mount type=bind,source=/app,target=/app nginx
 #error - bind source path doesn't exist - with volumes you don't have to create the point ahead of time, with binds you have to create the folder !
+### best practices ###
+# use small base image (alpine or slim)
+# combine layers ( 1 RUN command instead of two )
+# .dockerignore
+# keep your final stage small ( have a lot of intermediate build steps )
+# use non root user if root is not needed (but avoid switchin users during build -> extra layers)
+# use HEALTHCHECK command
+
 
