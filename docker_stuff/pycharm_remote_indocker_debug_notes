@@ -1,0 +1,22 @@
+- Go to Settings >> Build, Execution, Deployment >> Docker
+
+- Select "TCP socket"
+
+- Enter 'unix:///var/run/docker.sock' under "Engine API URL"
+
+
+Thank you for the project, we've reproduced the issue and stumbled upon the following ticket: https://youtrack.jetbrains.com/issue/PY-32022
+
+It boils down to the entrypoint defined in your Dockerfile.
+After I changed it to CMD instead of ENTRYPOINT, the debugger started to work. Please try it.
+
+
+https://youtrack.jetbrains.com/issue/PY-22909#focus=streamItem-27-1963873.0-0
+quote:
+The issue PY-21709 states that we cannot ignore entry points defined for docker compose service because there are cases when entry points have to be executed and the project https://github.com/pydanny/cookiecutter-django is one of such cases.
+
+The only way we could make it work from the IDE out-of-box is to have some setting like it is described in PY-21733.
+
+However there is a solution of your problem to ignore ENTRYPOINT defined in the docker image and it is quite nice in my opinion (please tell me what do you think about it?):
+create docker-compose.dev.yml with the only service named as the target service from original docker-compose.yml, set its entrypoint to an empty list;
+add docker-compose.dev.yml after original docker-compose.yml when adding Remote Python Interpreter Configure Remote Python Interpreter.png.
