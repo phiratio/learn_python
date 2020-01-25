@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import List
 from .forms import ListForm
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 
 def home(request):
@@ -60,3 +60,7 @@ def edit(request, list_id):
     else:
         item = List.objects.get(pk=list_id)
         return render(request, 'edit.html', {'item': item})
+
+
+def version(request):
+    return JsonResponse({"version": 3.14})
