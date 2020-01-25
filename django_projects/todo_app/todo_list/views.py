@@ -21,7 +21,7 @@ def home(request):
 
 
 def about(request):
-    context = {'first_name': 'John', 'last_name': 'Elder'}
+    context = {'first_name': 'Bob', 'last_name': 'D'}
     return render(request, 'about.html', context)
 
 
