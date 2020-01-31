@@ -30,7 +30,7 @@ def test_other_data(some_other_data):
 @pytest.fixture()
 def a_tuple():
     """Return something more interesting."""
-    return (1, 'foo', None, {'bar': 23})
+    return 1, 'foo', None, {'bar': 23}
 
 
 def test_a_tuple(a_tuple):

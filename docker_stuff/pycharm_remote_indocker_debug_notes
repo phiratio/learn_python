@@ -14,7 +14,13 @@ After I changed it to CMD instead of ENTRYPOINT, the debugger started to work. P
 https://youtrack.jetbrains.com/issue/PY-22909#focus=streamItem-27-1963873.0-0
 quote:
 The issue PY-21709 states that we cannot ignore entry points defined for docker compose service because there are cases when entry points have to be executed and the project https://github.com/pydanny/cookiecutter-django is one of such cases.
-
+# example docker-compose.debug.yml
+version: '2.1'
+services:
+  api:
+    entrypoint: []
+# entrypoint override, in add python interpreter add this file as last under docker compose
+# configuration files
 The only way we could make it work from the IDE out-of-box is to have some setting like it is described in PY-21733.
 
 However there is a solution of your problem to ignore ENTRYPOINT defined in the docker image and it is quite nice in my opinion (please tell me what do you think about it?):

@@ -30,8 +30,9 @@ def test_1(sess_scope, mod_scope, func_scope):
 def test_2(sess_scope, mod_scope, func_scope):
     """Demo is more fun with multiple tests."""
 
+
 @pytest.mark.usefixtures('class_scope')
-class TestSomething():
+class TestSomething:
     """Demo class scope fixtures."""
 
     def test_3(self):
