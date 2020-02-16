@@ -12,14 +12,14 @@ def home(request):
 
         if form.is_valid():
             form.save()
-            all_items = List.objects.all
+            all_items = List.objects.all().order_by('completed')
             messages.success(request, 'Item Has Been Added To List!')
             return render(request, 'home.html', {'all_items': all_items})
         messages.error(request, 'Nothing to add')
         return redirect('home')
 
     else:
-        all_items = List.objects.all
+        all_items = List.objects.all().order_by('completed')
         return render(request, 'home.html', {'all_items': all_items})
 
 
