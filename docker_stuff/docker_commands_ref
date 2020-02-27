@@ -51,7 +51,7 @@ docker rmi <image:tag/ID>
 ### volumes - 'virtual' disks to store and share data
 ### persistant ones and 'ephemeral'
 # backup named volumes
-docker run --rm -v api_dbdata:/datatobackupishere -v $(pwd):/backupdir ubuntu tar cvf /backupdir/backup.tar /backupeddataishere
+docker run --rm -v api_dbdata:/datatobackupishere -v $(pwd):/backupdir ubuntu tar cvf /backupdir/backup.tar /datatobackupishere
 docker volume rm api_dbdata
 docker volume create api_dbdata
 docker run --rm -v api_dbdata:/restorehere -v $(pwd):/backupishere ubuntu bash -c "cd /restorehere && tar xvf /backupishere/backup.tar --strip 1"
