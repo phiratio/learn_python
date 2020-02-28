@@ -31,3 +31,23 @@ class TestTextSearcher(TestCase):
         # Verify data
         results = sorted(self.test_data, key=operator.itemgetter(1), reverse=True)[:num]
         assert data == results
+
+    def test_result_saved_to_cache(self):
+        # Mock the results data
+        keyword, num = 'python', 3
+        # put data to cache when you call get_results
+        data = self.searcher.get_results(keyword, num=num)
+        assert data == self.searcher.cache_dict[keyword]
+
+    def test_result_taken_from_cache(self):
+        # Mock the results data
+        keyword, num = 'python', 3
+        # put data to cache when you call get_results
+        data = self.searcher.get_results(keyword, num=num)
+        cache_state_snapshot = self.searcher.cache_dict.copy()
+        assert data == self.searcher.cache_dict[keyword]
+        # send same request, response is returned from cache
+        _ = self.searcher.get_results(keyword, num=num)
+        assert cache_state_snapshot == self.searcher.cache_dict
+        _ = self.searcher.get_results('pokemon', num=num)
+        assert cache_state_snapshot != self.searcher.cache_dict
