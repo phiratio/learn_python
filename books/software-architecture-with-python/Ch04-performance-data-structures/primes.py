@@ -5,6 +5,7 @@ Prime number iterator class
 
 """
 
+
 class Prime(object):
     """ A prime number iterator for first 'n' primes """
 
@@ -12,7 +13,7 @@ class Prime(object):
         self.n = n
         self.count = 0
         self.value = 0
-        
+
     def __iter__(self):
         return self
 
@@ -34,22 +35,23 @@ class Prime(object):
             if self.value % i == 0:
                 return False
         return True
-            
+
     def compute(self):
         """ Compute next prime """
 
         # Second time, reset value
         if self.count == 1:
             self.value = 1
-            
+
         while True:
             self.value += 2
-            
+
             if self.is_prime():
                 self.count += 1
                 break
 
         return self.value
 
+
 if __name__ == "__main__":
-    l=list(Prime(1000))
+    l = list(Prime(1000))
