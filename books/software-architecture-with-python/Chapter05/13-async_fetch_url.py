@@ -1,15 +1,16 @@
-# Code Listing #14
+# Code Listing #13
 
 """
 
-Fetch URLs asynchronously and parse their responses - using aiohttp module
+Fetch URLs asynchronously - using aiohttp and print response.
 
 """
 
-# async_fetch_url2.py
+# 13-async_fetch_url.py
 import asyncio
 import aiohttp
 import async_timeout
+
 
 @asyncio.coroutine
 def fetch_page(session, url, timeout=60):
@@ -18,15 +19,8 @@ def fetch_page(session, url, timeout=60):
     with async_timeout.timeout(timeout):
         response = session.get(url)
         return response
-                
-async def parse_response(futures):
 
-    for future in futures:
-        response = await future
-        data = await response.text()            
-        print('Response for URL',response.url,'=>', response.status, len(data))
-        response.close()    
-                
+
 loop = asyncio.get_event_loop()
 urls = ('http://www.google.com',
         'http://www.yahoo.com',
@@ -35,17 +29,14 @@ urls = ('http://www.google.com',
         'http://www.twitter.com')
 
 session = aiohttp.ClientSession(loop=loop)
-# Wait for futures
-
 tasks = map(lambda x: fetch_page(session, x), urls)
-done, pending = loop.run_until_complete(asyncio.wait(tasks, timeout=300))
-loop.run_until_complete(parse_response(done))
+# Wait for tasks
+done, pending = loop.run_until_complete(asyncio.wait(tasks, timeout=120))
 
+for future in done:
+    response = future.result()
+    print(response)
+    response.close()
 
 session.close()
 loop.close()
-
-    
-
-
-    
