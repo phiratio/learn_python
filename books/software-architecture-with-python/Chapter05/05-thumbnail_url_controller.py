@@ -105,7 +105,7 @@ class ThumbnailURLController(threading.Thread):
             # Decrease sleep time
             sleep_time = thread.sleep_time
             sleep_time -= sleep_diff
-            # If this goes off < zero, make it zero         
+            # If this goes off < zero, make it zero
             thread.sleep_time = max(0, sleep_time)
             # Dont hold the thread
 
@@ -286,7 +286,7 @@ class ThumbnailURL_Consumer(threading.Thread):
 if __name__ == '__main__':
     os.system('rm -f *.png')
     q = Queue(maxsize=2000)
-    controller = ThumbnailURLController(rate_limit=550, nthreads=3)
+    controller = ThumbnailURLController(rate_limit=55, nthreads=5)
     saver = ThumbnailImageSemaSaver(limit=100)
 
     controller.start()

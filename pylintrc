@@ -19,3 +19,6 @@ reports=no
 [SIMILARITIES]
 min-similarity-lines=10
 ignore-docstrings=yes
+
+[OTHER]
+max-line-length = 120

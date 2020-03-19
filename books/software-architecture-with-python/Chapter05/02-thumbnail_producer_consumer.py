@@ -20,8 +20,8 @@ import string
 import random
 import urllib.request
 
-from PIL import Image
 from queue import Queue
+from PIL import Image
 
 
 class ThumbnailURL_Generator(threading.Thread):
@@ -45,7 +45,8 @@ class ThumbnailURL_Generator(threading.Thread):
         return '%dx%d' % (random.choice(self._sizes),
                           random.choice(self._sizes))
 
-    def get_color(self):
+    @staticmethod
+    def get_color():
         return ''.join(random.sample(string.hexdigits[:-6], 3))
 
     # We start a thread using its start method, though the overridden method in the Thread subclass is run.
@@ -58,8 +59,8 @@ class ThumbnailURL_Generator(threading.Thread):
         while self.flag:
             # generate image URLs of random sizes and fg/bg colors
             url = self.url_template % (self.get_size(),
-                                       self.get_color(),
-                                       self.get_color())
+                                       ThumbnailURL_Generator.get_color(),
+                                       ThumbnailURL_Generator.get_color())
             # Add to queue
             print(self, 'Put', url)
             self.queue.put(url)

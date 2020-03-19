@@ -35,7 +35,7 @@ if __name__ == "__main__":
     for url in img_urls:
         # For making the program serial, comment out the next two
         # lines and uncomment the last line.
-        # check performance with > time python3 thumbnail_converter.py
+        # check performance with > time python3 01-thumbnail_converter.py
         t = threading.Thread(target=thumbnail_image, args=(url,))
         t.start()
         # thumbnail_image(url)
