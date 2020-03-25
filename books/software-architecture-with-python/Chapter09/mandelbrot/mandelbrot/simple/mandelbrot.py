@@ -3,7 +3,7 @@ Program for producing a Mandelbrot fractal image set for a given size (wxh) and
 number of iterations using Pillow.
 """
 
-# mandelbrot.py
+# 18-mandelbrot.py
 import sys
 import argparse
 from PIL import Image

@@ -3,7 +3,7 @@ Program for producing a Mandelbrot fractal set using parallel computation via Py
 
 """
 
-# mandelbrot_mp.py
+# 19-mandelbrot_mp.py
 import sys
 from PIL import Image
 import pymp

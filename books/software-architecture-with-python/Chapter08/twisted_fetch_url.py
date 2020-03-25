@@ -28,5 +28,4 @@ if __name__ == "__main__":
     deferred = getPage(url) 
     deferred.addCallbacks(save_page, handle_error)
     deferred.addBoth(finish_processing)
-
     reactor.run()
