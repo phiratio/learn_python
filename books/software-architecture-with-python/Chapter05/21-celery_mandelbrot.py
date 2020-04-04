@@ -40,4 +40,7 @@ if __name__ == "__main__":
     print('Creating mandelbrot set with size %(width)sx%(height)s, #iterations=%(niter)s' % args.__dict__)
     mandelbrot_main(args.width, args.height, args.niter, args.output)
     # start like that
-    # celery -A 21-celery_mandelbrot.py worker -c 4 --loglevel info
+    # docker run -d -p 5672:5672 rabbitmq
+    # docker run -d -p 6379:6379 redis
+    # celery -A mandelbrot_tasks worker -c 4 --loglevel info   # not that .py is omitted
+    # python 21-celery_mandelbrot.py
