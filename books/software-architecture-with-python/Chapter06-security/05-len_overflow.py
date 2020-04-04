@@ -8,11 +8,12 @@ Code testing the 'len' function for overflow errors
 
 
 class A(object):
-    def __len__(self): 
+    def __len__(self):
         return 100 ** 100
 
+
 class B:
-    def __len__(self): 
+    def __len__(self):
         return 100 ** 100
 
 
