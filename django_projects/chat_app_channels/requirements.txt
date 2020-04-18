@@ -28,11 +28,13 @@ PyHamcrest==2.0.2
 pylint==2.4.4
 pyOpenSSL==19.1.0
 pytz==2019.3
+selenium==3.141.0
 service-identity==18.1.0
 six==1.14.0
 sqlparse==0.3.1
 Twisted==20.3.0
 txaio==20.3.1
 typed-ast==1.4.1
+urllib3==1.25.9
 wrapt==1.11.2
 zope.interface==5.0.1
