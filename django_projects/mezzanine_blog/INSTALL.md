@@ -9,3 +9,8 @@ mysql -u user -p
 create database dbname;
 update your databases config file (mezzanine got local one also!)
 python manage.py createdb
+
+Extra stuff:
+python manage.py collecttemplate
+rename templates -> tempdrafts
+create templates inside theme app
