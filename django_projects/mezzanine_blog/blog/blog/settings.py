@@ -4,7 +4,10 @@ import os
 
 from django import VERSION as DJANGO_VERSION
 from django.utils.translation import ugettext_lazy as _
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 
 ######################
 # MEZZANINE SETTINGS #
@@ -346,3 +349,15 @@ else:
 ####################
 # CUSTOM SETTINGS #
 ####################
+FORMS_USE_HTML5 = True
+
+####################
+# Email #
+####################
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_FAIL_SILENTLY = False
