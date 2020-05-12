@@ -21,7 +21,9 @@
 {% block pageheader %}
     <!-- Page Header -->
     <header class="masthead" style="{% if request.path == '/about/' %}
-        background-image: url('{{ STATIC_URL }}image/about-bg.jpg'){% endif %}">
+        background-image: url('{{ STATIC_URL }}image/about-bg.jpg')
+    {% elif request.path == '/contact/' %}
+        background-image: url('{{ STATIC_URL }}image/contact-bg.jpg'){% endif %}">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">

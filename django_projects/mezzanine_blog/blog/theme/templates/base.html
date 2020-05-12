@@ -29,6 +29,7 @@
 
         <!-- Custom styles for this template -->
         <link href="{% static "css/clean-blog.min.css" %}" rel="stylesheet">
+        <link href="{% static "css/custom.css" %}" rel="stylesheet">
 
         {% if LANGUAGE_BIDI %}
             <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">
@@ -43,6 +44,7 @@
     {% endcompress %}
 
     {% compress js %}
+        <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
         {% block extra_js %}{% endblock %}
@@ -79,7 +81,9 @@
 {% block pageheader %}{% endblock %}
 <div class="container">
     <div class="row">
-        {% block main %}{% endblock %}
+        <div class="col-lg-8 col-md-10 mx-auto">
+            {% block main %}{% endblock %}
+        </div>
     </div>
 </div>
 <hr>
