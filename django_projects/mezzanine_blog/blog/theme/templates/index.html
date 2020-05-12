@@ -6,7 +6,7 @@
 
 
 
-{% block main %}
+{% block pageheader %}
     <!-- Page Header -->
     <header class="masthead" style="background-image: url('{{ STATIC_URL }}image/home-bg.jpg')">
         <div class="overlay"></div>
@@ -21,9 +21,11 @@
             </div>
         </div>
     </header>
+{% endblock %}
 
-    <!-- Main Content -->
-    <div class="container">
+<div class="container">
+    {% block main %}
+        <!-- Main Content -->
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
                 <div class="post-preview">
@@ -43,7 +45,8 @@
                 <div class="post-preview">
                     <a href="post.html">
                         <h2 class="post-title">
-                            I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.
+                            I believe every human has a finite number of heartbeats. I don't intend to waste any of
+                            mine.
                         </h2>
                     </a>
                     <p class="post-meta">Posted by
@@ -71,7 +74,8 @@
                             Failure is not an option
                         </h2>
                         <h3 class="post-subtitle">
-                            Many say exploration is part of our destiny, but it’s actually our duty to future generations.
+                            Many say exploration is part of our destiny, but it’s actually our duty to future
+                            generations.
                         </h3>
                     </a>
                     <p class="post-meta">Posted by
@@ -85,7 +89,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <hr>
-{% endblock %}
+        <hr>
+    {% endblock %}
