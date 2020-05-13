@@ -350,6 +350,7 @@ else:
 # CUSTOM SETTINGS #
 ####################
 FORMS_USE_HTML5 = True
+BLOG_SLUG = ""
 
 ####################
 # Email #
