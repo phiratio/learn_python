@@ -350,12 +350,13 @@ else:
 # CUSTOM SETTINGS #
 ####################
 FORMS_USE_HTML5 = True
-BLOG_SLUG = ""
+#BLOG_SLUG = ""
 
 ####################
 # Email #
 ####################
 EMAIL_HOST = 'smtp.gmail.com'
+COMMENTS_USE_RATINGS = False
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')

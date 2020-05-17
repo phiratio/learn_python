@@ -4,6 +4,7 @@ pip install mezzanine
 follow instructions from here https://pypi.org/project/mysqlclient/
 sudo mysql -u root
 create user 'user'@'localhost';
+grant all privileges on *.* to 'user'@'localhost';
 alter user 'user'@'localhost' identified by 'password';
 mysql -u user -p
 create database dbname;

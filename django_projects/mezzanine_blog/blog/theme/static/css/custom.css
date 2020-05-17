@@ -5,3 +5,20 @@
 form.mezzanine-form input, form.mezzanine-form textarea {
     width: 100%;
 }
+
+.site-heading .meta a {
+    color: white;
+    text-decoration: none;
+}
+
+#comment .floating-label-form-group label{
+    opacity: 1;
+    font-size: 20px;
+    font-weight: bold;
+    top: 0;
+
+}
+
+#comment .floating-label-form-group input, #comment .floating-label-form-group textarea {
+    width: 100%;
+}
