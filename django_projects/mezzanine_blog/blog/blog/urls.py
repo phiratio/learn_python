@@ -10,6 +10,7 @@ from mezzanine.conf import settings
 
 # Uncomment to use blog as home page. See also urlpatterns section below.
 from mezzanine.blog import views as blog_views
+from theme.views import blog_redirect
 
 admin.autodiscover()
 
@@ -67,6 +68,10 @@ urlpatterns += [
     # NOTE: Don't forget to import the view function too!
 
     url("^$", blog_views.blog_post_list, name="home"),
+
+    # Custom blog page redirect
+    url("^blog/$", blog_redirect, name="blog-redirect"),
+
 
     # MEZZANINE'S URLS
     # ----------------
