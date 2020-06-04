@@ -21,7 +21,12 @@
     <li class="active">{{ blog_post.title }}</li>
 {% endblock %}
 {% block blogposthero %}
-    <header class="masthead" style="background-image: url('{{ STATIC_URL }}image/post-bg.jpg')">
+    <header class="masthead"
+            style="{% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+                background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 800 640 %}')
+            {% else %}
+                background-image: url('{{ STATIC_URL }}image/post-bg.jpg')
+            {% endif %}">
         <div class="overlay"></div>
         <div class="container">
             <div class="row">
@@ -43,7 +48,8 @@
                                     {% trans "Comments" %}
                                 {% endspaceless %}</a>)
                                 {% else %}(<a href="#comments">{% spaceless %}
-                                    {% blocktrans count comments_count=blog_post.comments_count %}{{ comments_count }} comment
+                                    {% blocktrans count comments_count=blog_post.comments_count %}{{ comments_count }}
+                                        comment
                                         {% plural %}{{ comments_count }} comments{% endblocktrans %}
                                 {% endspaceless %}</a>)
                                 {% endif %}
@@ -87,11 +93,6 @@
         </p>
     {% endblock %}
 
-    {% block blog_post_detail_featured_image %}
-        {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
-            <p><img class="img-responsive" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 600 0 %}"></p>
-        {% endif %}
-    {% endblock %}
 
     {% if settings.COMMENTS_DISQUS_SHORTNAME %}
         {% include "generic/includes/disqus_counts.html" %}

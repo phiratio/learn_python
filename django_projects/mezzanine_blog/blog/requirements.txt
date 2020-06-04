@@ -1,2 +1,2 @@
 Mezzanine==4.3.1
-django-environ
+django-environ==0.4.5
