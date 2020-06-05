@@ -65,11 +65,11 @@ EXTRA_MODEL_FIELDS = (
         # Dotted path to field.
         "mezzanine.blog.models.BlogPost.retina",
         # Dotted path to field class.
-        "CharField",
+        "ImageField",
         # Positional args for field class.
-        (_("Retina URL"),),
+        (_("Retina Image"),),
         # Keyword args for field class.
-        {"blank": True, "max_length": 150},
+        {"blank": True, "upload_to": "uploads/blog"},
     )
                      ),
 #     ),
