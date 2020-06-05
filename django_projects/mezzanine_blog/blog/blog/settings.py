@@ -239,6 +239,11 @@ if DJANGO_VERSION < (1, 9):
 ################
 
 INSTALLED_APPS = (
+    'mezzanine_api',
+    'rest_framework',
+    'django_filters',
+    'rest_framework_swagger',
+    'oauth2_provider',
     "theme",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -264,6 +269,7 @@ INSTALLED_APPS = (
 # these middleware classes will be applied in the order given, and in the
 # response phase the middleware will be applied in reverse order.
 MIDDLEWARE = (
+    'mezzanine_api.middleware.ApiMiddleware',
     "mezzanine.core.middleware.UpdateCacheMiddleware",
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -306,6 +312,16 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI,
 )
+
+#####################
+# REST API SETTINGS #
+#####################
+try:
+    from mezzanine_api.settings import *
+except ImportError:
+    pass
+
+REST_FRAMEWORK = { 'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema' }
 
 ##################
 # LOCAL SETTINGS #
