@@ -10,6 +10,7 @@ The implementation technique uses an iterator.
 import random
 import itertools
 
+
 class ComputerState(object):
     """ Base class for state of a computer """
 
@@ -20,7 +21,7 @@ class ComputerState(object):
 
     def __init__(self):
         self.index = 0
-        
+
     def __str__(self):
         return self.__class__.__name__
 
@@ -49,7 +50,7 @@ class ComputerState(object):
             if state in self.random_states:
                 self.__class__ = eval(state)
                 return self.__class__
-            
+
     def __next__(self):
         """ Switch to next state """
 
@@ -62,7 +63,7 @@ class ComputerState(object):
         else:
             # Can switch to a random state once it completes
             # list of mandatory next states.
-            
+
             # Reset index
             self.index = 0
             if len(self.random_states):
@@ -77,21 +78,25 @@ class ComputerOff(ComputerState):
     next_states = ['ComputerOn']
     random_states = ['ComputerSuspend', 'ComputerHibernate', 'ComputerOff']
 
+
 class ComputerOn(ComputerState):
     random_states = ['ComputerSuspend', 'ComputerHibernate', 'ComputerOff']
 
+
 class ComputerWakeUp(ComputerState):
     random_states = ['ComputerSuspend', 'ComputerHibernate', 'ComputerOff']
-    
+
+
 class ComputerSuspend(ComputerState):
-    next_states = ['ComputerWakeUp']  
+    next_states = ['ComputerWakeUp']
     random_states = ['ComputerSuspend', 'ComputerHibernate', 'ComputerOff']
 
+
 class ComputerHibernate(ComputerState):
-    next_states = ['ComputerOn']  
+    next_states = ['ComputerOn']
     random_states = ['ComputerSuspend', 'ComputerHibernate', 'ComputerOff']
-    
-    
+
+
 class Computer(object):
     """ A class representing a computer """
 
@@ -103,10 +108,9 @@ class Computer(object):
     def change(self, state=None):
         """ Change state """
 
-        if state==None:
+        if state is None:
             return self.state.change()
-        else:
-            return self.state.set(state)
+        return self.state.set(state)
 
     def __str__(self):
         """ Return state """
@@ -122,13 +126,13 @@ if __name__ == "__main__":
 
     # Now since this is an iterator we can even loop it
     print('Iterating')
-    
+
     for s in itertools.islice(c.state, 5):
         print(s)
-    
+
     # Switch off
     print(c.change('ComputerOff'))
     print(c.change('ComputerOn'))
     print(c.change('ComputerSuspend'))
-    # Will rais an exception!
-    print(c.change('ComputerHibernate'))        
+    # Will rise an exception!
+    print(c.change('ComputerHibernate'))

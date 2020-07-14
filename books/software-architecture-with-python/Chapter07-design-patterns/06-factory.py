@@ -8,6 +8,7 @@ Implementation of the Factory/Factory Method Design Pattern
 
 from abc import ABCMeta, abstractmethod
 
+
 class Employee(metaclass=ABCMeta):
     """ An Employee class """
 
@@ -19,30 +20,34 @@ class Employee(metaclass=ABCMeta):
     @abstractmethod
     def get_role(self):
         pass
-    
+
     def __str__(self):
         return "{} - {}, {} years old {}".format(self.__class__.__name__,
                                                  self.name,
                                                  self.age,
                                                  self.gender)
 
+
 class Engineer(Employee):
     """ An Engineer Employee """
-    
+
     def get_role(self):
         return "engineering"
 
+
 class Accountant(Employee):
     """ An Accountant Employee """
-    
+
     def get_role(self):
-        return "accountant"    
+        return "accountant"
+
 
 class Admin(Employee):
     """ An Admin Employee """
 
     def get_role(self):
         return "administration"
+
 
 class EmployeeFactory(object):
     """ An Employee factory class """
@@ -52,10 +57,10 @@ class EmployeeFactory(object):
         """ Factory method for creating an Employee instance """
 
         name = name.lower().strip()
-        
+
         if name == 'engineer':
             return Engineer(*args)
-        elif name == 'software engineer':
-            return SoftwareEngineer(*args)
-        elif name == 'admin':
+        if name == 'accountant':
+            return Accountant(*args)
+        if name == 'admin':
             return Admin(*args)

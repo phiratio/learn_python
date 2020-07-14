@@ -14,9 +14,10 @@ import signal
 import sys
 from communication import send, receive
 
+
 class ChatServer(object):
     """ Simple chat server using select """
-    
+
     def __init__(self, port=3490, backlog=5):
         self.clients = 0
         # Client map
@@ -25,32 +26,33 @@ class ChatServer(object):
         self.outputs = []
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.server.bind(('',port))
-        print('Listening to port',port,'...')
+        self.server.bind(('', port))
+        print(f'Listening to port {port} ...')
         self.server.listen(backlog)
         # Trap keyboard interrupts
         signal.signal(signal.SIGINT, self.sighandler)
-        
+
     def sighandler(self, signum, frame):
         # Close the server
         print('Shutting down server...')
         # Close existing client sockets
         for o in self.outputs:
+            print(f'{str(o)} closed')
             o.close()
-            
+
         self.server.close()
 
     def get_name(self, client):
-        
+
         # Return the printable name of the
         # client, given its socket...
         info = self.clientmap[client]
         host, name = info[0][0], info[1]
-        return '@'.join((name, host))
-        
+        return f'{name}@{host}'
+
     def serve(self):
-        
-        inputs = [self.server,sys.stdin]
+
+        inputs = [self.server, sys.stdin]
         self.outputs = []
 
         running = 1
@@ -58,7 +60,7 @@ class ChatServer(object):
         while running:
 
             try:
-                inputready,outputready,exceptready = select.select(inputs, self.outputs, [])
+                inputready, outputready, exceptready = select.select(inputs, self.outputs, [])
             except select.error as e:
                 break
             except socket.error as e:
@@ -72,7 +74,7 @@ class ChatServer(object):
                     print('chatserver: got connection %d from %s' % (client.fileno(), address))
                     # Read the login name
                     cname = receive(client).split('NAME: ')[1]
-                    
+
                     # Compute client name and send back
                     self.clients += 1
                     send(client, 'CLIENT: ' + str(address[0]))
@@ -84,7 +86,7 @@ class ChatServer(object):
                     for o in self.outputs:
                         # o.send(msg)
                         send(o, msg)
-                    
+
                     self.outputs.append(client)
 
                 elif s == sys.stdin:
@@ -114,15 +116,14 @@ class ChatServer(object):
                             for o in self.outputs:
                                 # o.send(msg)
                                 send(o, msg)
-                                
+
                     except socket.error as e:
                         # Remove
                         inputs.remove(s)
                         self.outputs.remove(s)
-                        
-
 
         self.server.close()
+
 
 if __name__ == "__main__":
     ChatServer().serve()

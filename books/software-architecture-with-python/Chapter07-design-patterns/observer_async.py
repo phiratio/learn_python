@@ -14,6 +14,7 @@ import aiohttp
 
 from collections import defaultdict, deque
 
+
 class NewsPublisher(object):
     """ A news publisher class with asynchronous notifications """
 
@@ -27,17 +28,17 @@ class NewsPublisher(object):
         """ Add a news story """
 
         self.channels[channel].append(url)
-        
+
     def register(self, subscriber, channel):
         """ Register a subscriber for a news channel """
-        
+
         self.subscribers[channel].append(weakref.proxy(subscriber))
 
     def stop(self):
         """ Stop the publisher """
 
         self.flag = False
-        
+
     async def notify(self):
         """ Notify subscribers """
 
@@ -46,7 +47,7 @@ class NewsPublisher(object):
         while self.flag:
             # Subscribers who were notified
             subs = []
-            
+
             for channel in self.channels:
                 try:
                     data = self.channels[channel].popleft()
@@ -56,16 +57,17 @@ class NewsPublisher(object):
 
                 subscribers = self.subscribers[channel]
                 for sub in subscribers:
-                    print('Notifying',sub,'on channel',channel,'with data=>',data)
+                    print('Notifying', sub, 'on channel', channel, 'with data=>', data)
                     response = await sub.callback(channel, data)
-                    print('Response from',sub,'for channel',channel,'=>',response)
+                    print('Response from', sub, 'for channel', channel, '=>', response)
                     subs.append(sub)
 
             await asyncio.sleep(2.0)
 
+
 class NewsSubscriber(object):
     """ A news subscriber class with asynchronous callbacks """
-    
+
     def __init__(self):
         self.stories = {}
         self.futures = []
@@ -78,12 +80,12 @@ class NewsSubscriber(object):
         # The data is a URL
         url = data
         # We return the response immediately
-        print('Fetching URL',url,'...')
+        print('Fetching URL', url, '...')
         future = aiohttp.request('GET', url)
         self.futures.append(future)
-            
+
         return future
-            
+
     async def fetch_urls(self):
 
         while self.flag:
@@ -97,7 +99,7 @@ class NewsSubscriber(object):
                 # Read data
                 data = await response.read()
 
-                print('\t',self,'Got data for URL',response.url,'length:',len(data))
+                print('\t', self, 'Got data for URL', response.url, 'length:', len(data))
                 self.stories[response.url] = data
                 # Mark as such
                 self.future_status[future] = 1
@@ -108,17 +110,21 @@ class NewsSubscriber(object):
 if __name__ == "__main__":
     publisher = NewsPublisher()
     # Append some stories
-    publisher.add_news('sports', 'http://www.cricbuzz.com/cricket-news/94018/collective-dd-show-hands-massive-loss-to-kings-xi-punjab')
-    publisher.add_news('sports', 'https://sports.ndtv.com/indian-premier-league-2017/ipl-2017-this-is-how-virat-kohli-recovered-from-the-loss-against-mumbai-indians-1681955')
-    publisher.add_news('india','http://www.business-standard.com/article/current-affairs/mumbai-chennai-and-hyderabad-airports-put-on-hijack-alert-report-117041600183_1.html')
-    publisher.add_news('india','http://timesofindia.indiatimes.com/india/pakistan-to-submit-new-dossier-on-jadhav-to-un-report/articleshow/58204955.cms')
+    publisher.add_news('sports',
+                       'http://www.cricbuzz.com/cricket-news/94018/collective-dd-show-hands-massive-loss-to-kings-xi-punjab')
+    publisher.add_news('sports',
+                       'https://sports.ndtv.com/indian-premier-league-2017/ipl-2017-this-is-how-virat-kohli-recovered-from-the-loss-against-mumbai-indians-1681955')
+    publisher.add_news('india',
+                       'http://www.business-standard.com/article/current-affairs/mumbai-chennai-and-hyderabad-airports-put-on-hijack-alert-report-117041600183_1.html')
+    publisher.add_news('india',
+                       'http://timesofindia.indiatimes.com/india/pakistan-to-submit-new-dossier-on-jadhav-to-un-report/articleshow/58204955.cms')
 
     subscriber1 = NewsSubscriber()
-    subscriber2 = NewsSubscriber()  
+    subscriber2 = NewsSubscriber()
     publisher.register(subscriber1, 'sports')
-    publisher.register(subscriber2, 'india')    
+    publisher.register(subscriber2, 'india')
     # subscriber.start()
-    
+
     loop = asyncio.get_event_loop()
 
     tasks = map(lambda x: x.fetch_urls(), (subscriber1, subscriber2))
@@ -126,7 +132,3 @@ if __name__ == "__main__":
 
     print('Ending loop')
     loop.close()
-   
-   
-        
-        

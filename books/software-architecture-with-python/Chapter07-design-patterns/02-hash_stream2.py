@@ -6,8 +6,8 @@ Take an input stream and hash it's contents and return the hash digest
 
 """
 
-# hash_stream.py
-from hashlib import sha1
+# 02-hash_stream2.py
+from hashlib import sha1, md5
 
 def hash_stream_sha1(stream, chunk_size=4096):
     """ Hash a stream of data using sha1 """

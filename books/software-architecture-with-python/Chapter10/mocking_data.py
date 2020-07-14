@@ -18,19 +18,22 @@ import itertools
 
 search_api = 'http://api.%s(site)/listings/search'
 
+
 def get_api_key(site):
     """ Return API key for a site """
 
     # Assumes the configuration is available via a config module
     return config.get_key(site)
 
+
 def unique_key(address, site):
     """ Return a unique key for the given arguments """
 
     return hashlib.md5(''.join((address['name'],
-                               address['street'],
-                               address['city'],
-                               site)).encode('utf-8')).hexdigest()
+                                address['street'],
+                                address['city'],
+                                site)).encode('utf-8')).hexdigest()
+
 
 def memoize(func, ttl=86400):
     """ A memory caching decorator """
@@ -39,7 +42,6 @@ def memoize(func, ttl=86400):
     cache = StrictRedis(host='localhost', port=6379)
 
     def wrapper(*args, **kwargs):
-
         # Construct a unique cache filename
         key = unique_key(args[0], args[1])
         # Check if its in redis
@@ -55,12 +57,12 @@ def memoize(func, ttl=86400):
         return result
 
     return wrapper
-    
+
+
 def filecache(func):
     """ A file caching decorator """
 
     def wrapper(*args, **kwargs):
-
         # Construct a unique cache key
         filename = unique_key(args[0], args[1]) + '.data'
         if os.path.isfile(filename):
@@ -70,12 +72,14 @@ def filecache(func):
 
         # Else compute and write into file
         result = func(*args, **kwargs)
-        json.dump(result, open(filename,'w'))
+        json.dump(result, open(filename, 'w'))
 
         return result
 
     return wrapper
-        
+
+
+@filecache
 def api_search(address, site='yellowpages.com'):
     """ API to search for a given business address
     on a site and return results """
@@ -101,6 +105,7 @@ def parse_listings(addresses, sites):
             # Process the listing
             process_listing(listing, site)
 
+
 def process_listings(listing, site):
     """ Process listings function """
 
@@ -110,13 +115,14 @@ def process_listings(listing, site):
     print('Processing listings')
 
 
-
 @memoize
 def func(address, site):
     return list(map(lambda x: str(x).upper(),
                     address.values()))
 
-    
+
 if __name__ == "__main__":
-    address = {u'city': u'Elloree', u'name': u'Sure Shine', u'country': u'US', u'longitude': -80.5720318, u'phone': u'8037077781', u'state': u'SC', u'street': u'5543 Old Hwy 6', u'postal_code': u'29047', u'latitude': 33.5309936, u'id': u'84134184-03e8-4cf6-ae32-0ed63f92b568'}
+    address = {u'city': u'Elloree', u'name': u'Sure Shine', u'country': u'US', u'longitude': -80.5720318,
+               u'phone': u'8037077781', u'state': u'SC', u'street': u'5543 Old Hwy 6', u'postal_code': u'29047',
+               u'latitude': 33.5309936, u'id': u'84134184-03e8-4cf6-ae32-0ed63f92b568'}
     print(func(address, 'yellowpages.com'))

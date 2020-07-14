@@ -37,7 +37,8 @@ if __name__ == "__main__":
     import sys
 
     # Source
-    stream1 = watch('*.' + sys.argv[1])
+    #stream1 = watch('*.' + sys.argv[1])
+    stream1 = watch('*.py')
 
     while True:
         # Filter

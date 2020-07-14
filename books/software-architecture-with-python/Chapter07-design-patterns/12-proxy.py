@@ -8,6 +8,7 @@ Proxy design pattern - An example of an instance counting proxy
 
 from abc import ABCMeta, abstractmethod
 
+
 class Employee(metaclass=ABCMeta):
     """ An Employee class """
 
@@ -19,18 +20,20 @@ class Employee(metaclass=ABCMeta):
     @abstractmethod
     def get_role(self):
         pass
-    
+
     def __str__(self):
         return "{} - {}, {} years old {}".format(self.__class__.__name__,
                                                  self.name,
                                                  self.age,
                                                  self.gender)
-        
+
+
 class Engineer(Employee):
     """ An Engineer Employee """
-    
+
     def get_role(self):
         return "engineering"
+
 
 class Admin(Employee):
     """ An Admin Employee """
@@ -38,11 +41,13 @@ class Admin(Employee):
     def get_role(self):
         return "administration"
 
+
 class Accountant(Employee):
     """ An Accountant Employee """
 
     def get_role(self):
         return "accounting"
+
 
 class EmployeeProxy(object):
     """ Counting proxy class for Employees """
@@ -56,7 +61,7 @@ class EmployeeProxy(object):
         instance = object.__new__(cls)
         cls.incr_count()
         return instance
-        
+
     def __init__(self, employee):
         self.employee = employee
 
@@ -74,19 +79,20 @@ class EmployeeProxy(object):
     def get_count(cls):
         """ Get employee count """
         return cls.count
-    
+
     def __str__(self):
         return str(self.employee)
-    
+
     def __getattr__(self, name):
         """ Redirect attributes to employee instance """
 
         return getattr(self.employee, name)
-        
+
     def __del__(self):
         """ Overloaded __del__ method """
         # Decrement employee count
         self.decr_count()
+
 
 class EmployeeProxyFactory(object):
     """ An Employee factory class returning proxy objects """
@@ -96,7 +102,7 @@ class EmployeeProxyFactory(object):
         """ Factory method for creating an Employee instance """
 
         name = name.lower().strip()
-        
+
         if name == 'engineer':
             return EmployeeProxy(Engineer(*args))
         elif name == 'accountant':
@@ -104,3 +110,8 @@ class EmployeeProxyFactory(object):
         elif name == 'admin':
             return EmployeeProxy(Admin(*args))
 
+
+if __name__ == '__main__':
+    factory = EmployeeProxyFactory()
+    bob = factory.create('engineer', 'bob', '20', 'male')
+    print(bob)

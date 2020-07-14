@@ -34,7 +34,7 @@ class ChatClientProtocol(ChatProtocol):
     """ Chat client protocol """
 
     def connectionMade(self):
-        print 'Connection made'
+        print('Connection made')
         self.output.write(self.client + ":<handshake>")
         
     def processData(self, data):
@@ -63,7 +63,7 @@ class StdioClientProtocol(ChatProtocol):
         stdio_wrapper = stdio.StandardIO(chat)
         # Connect to output
         self.output = stdio_wrapper
-        print "Connected to server"
+        print("Connected to server")
         self.input_prompt()
 
     def input_prompt(self):

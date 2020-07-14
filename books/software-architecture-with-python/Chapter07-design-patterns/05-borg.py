@@ -7,6 +7,7 @@ of Singletons
 
 """
 
+
 class Borg(object):
     """ I ain't a Singleton """
     __shared_state = {}
@@ -17,7 +18,7 @@ class Borg(object):
 
 class IBorg(Borg):
     """ I am a Borg """
-    
+
     def __init__(self):
         Borg.__init__(self)
         self.state = 'init'
@@ -25,10 +26,15 @@ class IBorg(Borg):
     def __str__(self):
         return self.state
 
+
 class ABorg(Borg): pass
+
+
 class BBorg(Borg): pass
 
+
 class A1Borg(ABorg): pass
+
 
 if __name__ == "__main__":
     a = ABorg()
@@ -36,8 +42,6 @@ if __name__ == "__main__":
     b = BBorg()
 
     a.x = 100
-    print('a.x =>',a.x)
-    print('a1.x =>',a1.x)
-    print('b.x =>',b.x)     
-
-    
+    print('a.x =>', a.x)
+    print('a1.x =>', a1.x)
+    print('b.x =>', b.x)

@@ -12,6 +12,8 @@ and return list of lines containing the word.
 import os
 import sys
 import glob
+import pprint
+
 
 def grep_word(word, filenames):
     """ Open the given files and look for a specific word.
@@ -19,16 +21,15 @@ def grep_word(word, filenames):
     return it """
 
     lines, words = [], []
-    
-    for filename in filenames:
-        print('Processing',filename)
-        lines += open(filename).readlines()
 
+    for filename in filenames:
+        print('Processing', filename)
+        lines += open(filename).readlines()
 
     # Debugging steps
     # 1. sys.exit
     # sys.exit('Exiting after first loop')
-    
+
     word = word.lower()
     for line in lines:
         if word in line.lower():
@@ -41,8 +42,8 @@ def grep_word(word, filenames):
 
     # Now sort the list according to length of lines
     return sorted(words, key=len)
-    
-if __name__ == "__main__":
-    print('Lines => ', grep_word('lines', glob.glob('*.py')))
 
-    
+
+if __name__ == "__main__":
+    x = f'Lines => {grep_word("lines", glob.glob("*.py"))}'
+    pprint.pprint(x)

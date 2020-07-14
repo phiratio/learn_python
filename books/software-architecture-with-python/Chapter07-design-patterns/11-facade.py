@@ -8,9 +8,10 @@ Facade design pattern using a Car as example
 
 import time
 
+
 class Engine(object):
     """ An Engine class """
-    
+
     def __init__(self, name, bhp, rpm, volume, cylinders=4, type='petrol'):
         self.name = name
         self.bhp = bhp
@@ -26,6 +27,7 @@ class Engine(object):
     def stop(self):
         """ Stop the engine """
         print('Engine stopped')
+
 
 class Transmission(object):
     """ Transmission class """
@@ -43,7 +45,7 @@ class Transmission(object):
             print('Cant shift up anymore')
         else:
             self.gear_pos += 1
-            print('Shifted up to gear',self.gear_pos)
+            print('Shifted up to gear', self.gear_pos)
 
     def shift_down(self):
         """ Shift down gears """
@@ -52,7 +54,7 @@ class Transmission(object):
             print("In reverse, can't shift down")
         else:
             self.gear_pos -= 1
-            print('Shifted down to gear',self.gear_pos)         
+            print('Shifted down to gear', self.gear_pos)
 
     def shift_reverse(self):
         """ Shift in reverse """
@@ -64,9 +66,9 @@ class Transmission(object):
         """ Shift to a gear position """
 
         self.gear_pos = gear
-        print('Shifted to gear',self.gear_pos)      
+        print('Shifted to gear', self.gear_pos)
 
-                 
+
 class Brake(object):
     """ A brake class """
 
@@ -86,19 +88,21 @@ class Brake(object):
         print('%s %d released' % (self.__class__.__name__,
                                   self.number))
 
+
 class ParkingBrake(Brake):
     """ A parking brake class """
 
     def __init__(self, type='drum'):
         super(ParkingBrake, self).__init__(type=type, number=1)
-        
+
 
 class Suspension(object):
     """ A suspension class """
-    
+
     def __init__(self, load, type='mcpherson'):
         self.type = type
         self.load = load
+
 
 class Wheel(object):
     """ A wheel class """
@@ -107,14 +111,15 @@ class Wheel(object):
         self.material = material
         self.diameter = diameter
         self.pitch = pitch
-                 
+
+
 class WheelAssembly(object):
     """ A wheel assembly class """
-    
+
     def __init__(self, brake, suspension):
         self.brake = brake
         self.suspension = suspension
-        self.wheels = Wheel('alloy', 'M12',1.25)
+        self.wheels = Wheel('alloy', 'M12', 1.25)
 
     def apply_brakes(self):
         """ Apply brakes """
@@ -122,23 +127,25 @@ class WheelAssembly(object):
         print('Applying brakes')
         self.brake.engage()
 
+
 class Frame(object):
     """ A frame class for an automobile """
-    
+
     def __init__(self, length, width):
         self.length = length
         self.width = width
+
 
 class Car(object):
     """ A car class - Facade pattern """
 
     def __init__(self, model, manufacturer):
-        self.engine = Engine('Maruti K-series',85,5000, 1.3)
+        self.engine = Engine('Maruti K-series', 85, 5000, 1.3)
         self.frame = Frame(385, 170)
         self.wheel_assemblies = []
         for i in range(4):
-            self.wheel_assemblies.append(WheelAssembly(Brake(i+1), Suspension(1000)))
-            
+            self.wheel_assemblies.append(WheelAssembly(Brake(i + 1), Suspension(1000)))
+
         self.transmission = Transmission(5, 115)
         self.model = model
         self.manufacturer = manufacturer
@@ -173,12 +180,13 @@ class Car(object):
         # Engage parking brake
         self.park_brake.engage()
         print('Car stopped.')
-        
+
+
 if __name__ == "__main__":
-    car = Car('Swift', 'Suzuki')
-    print(car)
-    car.start()
+    CAR = Car('Swift', 'Suzuki')
+    print(CAR)
+    CAR.start()
     # Let the car run for 10 seconds - awfully short time I know ;-)
     time.sleep(10)
-    
-    car.stop()
+
+    CAR.stop()

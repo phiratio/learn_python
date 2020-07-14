@@ -29,3 +29,5 @@ if __name__ == "__main__":
     p2 = Process(target=words, args=(parent,))
     p2.start()
     p1.join();p2.join()
+    # cat pipe_words.py | wc -w
+    # python pipe_words.py pipe words.py

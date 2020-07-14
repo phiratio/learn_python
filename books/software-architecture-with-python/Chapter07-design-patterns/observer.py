@@ -11,6 +11,7 @@ import time
 
 from datetime import datetime
 
+
 class Alarm(threading.Thread):
     """ A class which generates periodic alarms """
 
@@ -20,6 +21,7 @@ class Alarm(threading.Thread):
         self.subscribers = []
         self.flag = True
         threading.Thread.__init__(self, None, None)
+        self.start()
 
     def register(self, subscriber):
         """ Register a subscriber for alarm notifications """
@@ -31,19 +33,19 @@ class Alarm(threading.Thread):
 
         for subscriber in self.subscribers:
             subscriber.update(self.duration)
-        
+
     def stop(self):
         """ Stop the thread """
 
         self.flag = False
-        
+
     def run(self):
         """ Run the alarm generator """
-
         while self.flag:
             time.sleep(self.duration)
             # Notify
             self.notify()
+
 
 class DumbClock(object):
     """ A dumb clock class using an Alarm object """
@@ -61,7 +63,12 @@ class DumbClock(object):
         """ Display local time """
         
         return datetime.fromtimestamp(self.current).strftime('%H:%M:%S')
-        
-        
 
-            
+
+if __name__ == '__main__':
+    alarm = Alarm(duration=1)
+    clock = DumbClock()
+    alarm.register(clock)
+    print(clock)
+    time.sleep(3)
+    print(clock)
