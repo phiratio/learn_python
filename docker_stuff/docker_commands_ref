@@ -101,4 +101,13 @@ docker container run -d --mount type=bind,source=/app,target=/app nginx
 # use non root user if root is not needed (but avoid switchin users during build -> extra layers)
 # use HEALTHCHECK command
 
+# DNS round robin
+docker network create botnet
+docker container run -d --network botnet --network-alias search  elasticsearch:2
+docker container run -d --network botnet --network-alias search  elasticsearch:2
+docker container run --rm -it --network botnet alpine
+ # nslookup search
+docker container run --rm -it --network botnet centos
+ # curl -s search:9200  # few times
+
 
