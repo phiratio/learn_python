@@ -1,0 +1,4 @@
+docker run --name awesomedb -p 25432:5432 -e POSTGRES_PASSWORD=password -d postgres:latest
+docker exec -it awesomedb psql -U postgres   
+create user debug with superuser;
+create database awesomedb owner debug;
