@@ -1,0 +1,16 @@
+# create 3 node on digital ocean
+# ssh&install docker on each one (script in get.docker.com)
+
+#on node 1 
+docker swarm init # copy command
+# promote node 2
+docker node ls
+docker node update --role manager node2-name-here
+docker service create --replicas 3 alpine ping 8.8.8.8
+docker service ps
+
+# on node 2
+docker swarm join --token SWMTKN-1-41g6anh1tg06v4n890ccoaltsy3ncy0jogxjl7xwspkopalg57-5wx9jl1oawghyzxc8xz1iyvr4 1.1.1.1:2377
+
+# on node 3
+docker swarm join --token SWMTKN-1-41g6anh1tg06v4n890ccoaltsy3ncy0jogxjl7xwspkopalg57-5wx9jl1oawghyzxc8xz1iyvr4 1.1.1.1:2377

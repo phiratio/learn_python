@@ -1,0 +1,65 @@
+docker network create --driver overlay mydrupal
+docker service create --name psql --network mydrupal -e POSTGRES_PASSWORD=password postgres
+docker service ps psql
+docker container logs psql...
+docker service create --name drupal --network mydrupal -p 80:80 drupal
+
+### routing mesh ###
+docker service create --name search --replicas 3 -p 9200:9200 elasticsearch:2
+# repeat
+curl localhost:9200  #name in response will be diff - virtual ip acting as load balancer and distributing load across 3 nodes
+
+
+### multi service app with doocker's example voting app ###
+architecture be like
+voting-app(in python) --> redis --> worker --> db --> result app
+### Services (names below should be service names)
+- vote
+    - phiratio/examplevotingapp_vote
+    - web front end for users to vote dog/cat
+    - ideally published on TCP 80. Container listens on 80
+    - on frontend network
+    - 2 replicas of this container
+
+- redis
+    - redis:3.2
+    - key/value storage for incoming votes
+    - no public ports
+    - on frontend network
+    - 1 replica
+    
+- worker
+    - phiratio/examplevotingapp_worker:java
+    - backend processor of redis and storing results in postgres
+    - no public ports
+    - on frontend and backend networks
+    - 1 replica
+
+- db
+    - postgres:9.4
+    - one named volume needed, pointing to /var/lib/postgresql/data
+    - on backend network
+    - 1 replica
+    - env for password-less connections -e POSTGRES_HOST_AUTH_METHOD=trust
+
+- result
+    - phiratio/examplevotingapp_result
+    - web app that shows results
+    - runs on high port since just for admins (lets imagine)
+    - so run on a high port of your choosing (I choose 5001), container listens on 80
+    - on backend network
+    - 1 replica
+
+
+
+
+docker network create -d overlay backend
+docker network create -d overlay frontend
+
+docker service create --name vote -p 80:80 --network frontend --replicas 2 phiratio/examplevotingapp_vote
+docker service create --name redis --network frontend redis:3.2
+
+docker service create --name db --network backend -e POSTGRES_HOST_AUTH_METHOD=trust --mount type=volume,source=db-data,target=/var/lib/postgresql/data postgres:9.4
+docker service create --name result --network backend -p 5001:80 phiratio/examplevotingapp_result
+
+docker service create --name worker --network frontend --network backend phiratio/examplevotingapp_worker:java
