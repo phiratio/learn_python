@@ -110,4 +110,11 @@ docker container run --rm -it --network botnet alpine
 docker container run --rm -it --network botnet centos
  # curl -s search:9200  # few times
 
-
+# healthcheck example
+docker run --rm \
+--health-cmd="curl -f localhost:9200/_cluster/health||false" \
+--health-interval=5s \
+--health-retries=3 \
+--health-timeout=2s \
+--health-start-period=15s \
+elasticsearch:2
