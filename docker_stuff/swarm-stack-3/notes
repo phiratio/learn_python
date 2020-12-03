@@ -1,0 +1,5 @@
+docker-compose.override.yml - special name, when docker-compose up is executed it will use this file
+
+for running prod for example we need to issue the following:
+docker-compose up -f docker-compose.yml -f docker-compose.prod.yml up -d
+

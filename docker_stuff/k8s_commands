@@ -1,0 +1,20 @@
+alias kk='kubectl'
+
+kk run my-nginx --image nginx
+kk get pods
+kk get all
+kk delete deployment my-nginx
+kk delete pod my-nginx
+
+Depending on which version of Kubernetes you have installed, you'll need to decide how you'll create objects. Here's a cheat sheet for how old commands should be used with the 1.18 changes.
+
+kubectl run nginx --image nginx created a Deployment named nginx before 1.18 (which creates a ReplicaSet, which creates a Pod)
+
+kubectl run nginx --image nginx creates a Pod named nginx in 1.18+
+
+Creating a Deployment in 1.18: kubectl create deployment nginx --image nginx
+
+
+kk create deployment my-apache --image httpd
+kk get all (to get deployment name)
+kk scale deployment.apps/my-apache -- replicas 2
