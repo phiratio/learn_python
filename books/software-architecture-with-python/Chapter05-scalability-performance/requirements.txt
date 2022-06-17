@@ -11,7 +11,7 @@ id3reader==1.53.20070415
 joblib==0.11
 kombu==4.0.2
 multidict==2.1.4
-numpy==1.12.1
+numpy==1.21.0
 olefile==0.44
 Pillow==6.2.0
 pkg-resources==0.0.0
