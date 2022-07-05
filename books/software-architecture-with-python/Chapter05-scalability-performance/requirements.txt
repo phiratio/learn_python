@@ -15,7 +15,7 @@ numpy==1.12.1
 olefile==0.44
 Pillow==6.2.0
 pkg-resources==0.0.0
-pycares==2.1.1
+pycares==4.2.0
 pymp-pypi==0.4.0
 pytz==2017.2
 redis==2.10.5
