@@ -8,7 +8,7 @@ celery==4.0.2
 chardet==3.0.2
 eyeD3==0.7.11
 id3reader==1.53.20070415
-joblib==0.11
+joblib==1.2.0
 kombu==4.0.2
 multidict==2.1.4
 numpy==1.12.1
